@@ -1,8 +1,11 @@
 #ifndef COROUTINE_H_
 #define COROUTINE_H_
 
+#include <stdlib.h>
+#include <string.h>
 #include <ucontext.h>
 
+#define MAX_COROUTINE_SIZE 1024
 #define STACK_SIZE (1024 * 128)
 
 enum ScheduleStatus { S_FINISHED, S_RUNNING };
