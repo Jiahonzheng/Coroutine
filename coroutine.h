@@ -5,17 +5,20 @@
 
 #define STACK_SIZE (1024 * 128)
 
-enum ScheduleStatus { FINISHED, RUNNING };
-enum CoroutineStatus { DEAD, READY, RUNNING, SUSPEND };
+enum ScheduleStatus { S_FINISHED, S_RUNNING };
+enum CoroutineStatus { C_DEAD, C_READY, C_RUNNING, C_SUSPEND };
+
+struct Schedule;
+struct Coroutine;
 
 typedef struct Schedule {
   ucontext_t main_ctx;
-  Coroutine **coroutines;
+  struct Coroutine **coroutines;
   int running_coroutine;
   int max_index;
 } Schedule;
 
-typedef void (*coroutine_func)(Schedule *s, void *args);
+typedef void (*coroutine_func)(struct Schedule *s, void *args);
 
 typedef struct Coroutine {
   coroutine_func func;
@@ -96,6 +99,6 @@ void coroutine_resume(Schedule *s, int id);
  * @param id the id of the coroutine to get status
  * @return the status of the coroutine
  */
-enum CoroutineState coroutine_status(Schedule *s, int id);
+enum CoroutineStatus coroutine_status(Schedule *s, int id);
 
 #endif
